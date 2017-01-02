@@ -12,6 +12,7 @@ data, the second contains the units.
 from itertools import zip_longest
 import csv
 import numpy as np
+import subprocess as sp
 
 def grouper(iterable, n, fillvalue=None):
     "Collect data into fixed-length chunks or blocks"
@@ -33,8 +34,16 @@ class Activity:
         self.dataDict = {}
         self.unitsDict = {}
         self.indexDict = {}
+        self.fitPath = ''
         self.csvPath = ''
         print('Generated activity object.')
+        
+    def fit2csv(self,srcePath,destPath):
+        self.fitPath = srcePath
+        self.csvPath = destPath
+        cmmnd = 'java -jar FitCSVTool.jar -b ' + srcePath + ' ' + destPath
+        sp.run(cmmnd, stdout=sp.PIPE)
+        print('Finished converting file')
     
     def csv_parse(self,FilePath):
         # Function to read in the data from a csv file
